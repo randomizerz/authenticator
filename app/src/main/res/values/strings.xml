@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Authenticator</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="hint_email">Your email</string>
+    <string name="hint_password">Your password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
 </resources>
