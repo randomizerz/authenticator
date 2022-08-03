@@ -12,16 +12,15 @@ import com.ntgclarity.authenticator.words.WordsActivity
 class MainActivity : AppCompatActivity() {
     val kEmail = "signature"
 
+    var etEmail: EditText? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //val shared = getSharedPreferences("user.prf", MODE_PRIVATE)
-        val shared = PreferenceManager.getDefaultSharedPreferences(this)
-        val etEmail = findViewById<EditText>(R.id.et_email)
-        val email = shared.getString(kEmail, null)
+        etEmail = findViewById<EditText>(R.id.et_email)
 
-        etEmail.setText(email)
+        loadUserEmail()
 
         val btnLogin = findViewById<Button>(R.id.btn_login)
         val btnRegistration = findViewById<Button>(R.id.btn_register)
@@ -32,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnLogin.setOnClickListener {
-            val email = etEmail.text.toString()
+            val email = etEmail?.text.toString()
 
 //            shared.edit()
 //                .putString(kEmail, email)
@@ -48,7 +47,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun updateSignature(text: String) {
+    private fun loadUserEmail() {
+        //val shared = getSharedPreferences("user.prf", MODE_PRIVATE)
+        val shared = PreferenceManager.getDefaultSharedPreferences(this)
+        val email = shared.getString(kEmail, null)
+
+        etEmail?.setText(email)
+    }
+
+    private fun updateSignature(text: String) {
         val defaultPref = PreferenceManager.getDefaultSharedPreferences(this)
 
         defaultPref.edit()
@@ -72,19 +79,19 @@ class MainActivity : AppCompatActivity() {
         Log.d("###", files.joinToString())
     }
 
-    fun startRegistration() {
+    private fun startRegistration() {
         val intent = Intent(this, RegistrationActivity::class.java)
 
         startActivity(intent)
     }
 
-    fun startWords() {
+    private fun startWords() {
         val intent = Intent(this, WordsActivity::class.java)
 
         startActivity(intent)
     }
 
-    fun startSettings() {
+    private fun startSettings() {
         val intent = Intent(this, SettingsActivity::class.java)
 
         startActivity(intent)
