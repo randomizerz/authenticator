@@ -1,11 +1,16 @@
 package com.ntgclarity.authenticator.words
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.maximeroussy.invitrode.WordGenerator
 import com.ntgclarity.authenticator.R
+import com.ntgclarity.authenticator.network.retrofit
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class WordsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,6 +27,8 @@ class WordsActivity : AppCompatActivity() {
 
         rvWords.layoutManager = layoutManager
         rvWords.adapter = adapter
+
+        requestWords()
     }
 
     private fun randomWords(): Array<Word> {
@@ -34,5 +41,22 @@ class WordsActivity : AppCompatActivity() {
 
             Word(generator.newWord(len), "https://picsum.photos/${width}/${height}")
         }
+    }
+
+    private fun requestWords() {
+        retrofit.words()
+            .enqueue(object : Callback<List<Word>> {
+                override fun onResponse(call: Call<List<Word>>, response: Response<List<Word>>) {
+                    if (response.isSuccessful) {
+                        Log.d("***", "onResponse ${response.body().toString()}")
+                    } else {
+                        Log.d("***", "onResponse ${response.code()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<List<Word>>, t: Throwable) {
+                    Log.d("***", "onFailure ${t.localizedMessage} ")
+                }
+            })
     }
 }

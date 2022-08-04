@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.gson.annotations.SerializedName
 import com.ntgclarity.authenticator.R
 
 class WordsAdapter(private val words: Array<Word>) :
@@ -31,7 +32,7 @@ class WordsAdapter(private val words: Array<Word>) :
     override fun onBindViewHolder(holder: WordViewHolder, position: Int) {
         val word = words[position]
 
-        holder.tvWord.text = word.word
+        holder.tvWord.text = word.word1
 
         Glide.with(holder.itemView)
             .load(word.url)
@@ -41,4 +42,6 @@ class WordsAdapter(private val words: Array<Word>) :
     override fun getItemCount(): Int = words.size
 }
 
-data class Word(val word: String, val url: String)
+data class Word(
+    @SerializedName("word") val word1: String,
+    val url: String)
